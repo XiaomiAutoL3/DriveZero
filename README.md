@@ -3,7 +3,7 @@
 
 **End-to-End Driving Beyond Human Demonstrations**
 
-📄 [Report](https://raw.githubusercontent.com/XiaomiAutoL3/DriveZero/main/drivezero_report.pdf) |
+📄 [Report](https://github.com/XiaomiAutoL3/DriveZero/blob/main/drivezero_report.pdf) |
 📰 [Project page](https://xiaomiautol3.github.io/DriveZero/)
 
 
