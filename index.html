@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DriveZero: End-to-End Driving Beyond Human Demonstrations</title>
+<meta name="description" content="DriveZero is a camera-only end-to-end driving policy trained without any human trajectory supervision, distilled from a closed-loop RL teacher (DriveRL) and a vision foundation model backbone (DriveVFM).">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="container">
+
+  <header class="site-header">
+    <h1>DriveZero: End-to-End Driving Beyond Human Demonstrations</h1>
+    <div class="affiliation">AD &amp; Robotics, L3 Team, Xiaomi EV</div>
+    <div class="date">Technical Report, September 2026</div>
+    <nav class="links">
+      <a class="pill" href="drivezero_report.pdf">Paper</a>
+      <a class="pill" href="https://github.com/XiaomiAutoL3/DriveZero">Code</a>
+      <a class="pill" href="#bibtex">BibTeX</a>
+    </nav>
+  </header>
+
+  <img class="teaser" src="assets/teaser.png" alt="Overview of DriveRL, DriveVFM and DriveZero">
+
+  <p class="intro">A camera-only end-to-end driving policy that learns without any human trajectory supervision, yet surpasses the human driver on NAVSIM and sets the state of the art on NAVSIMv2 and HUGSIM.</p>
+
+  <!-- Method -->
+  <section id="method">
+    <h2>The DriveZero System</h2>
+    <p class="lead">DriveZero decomposes driving into an action model and a perception model, pretrains each in the regime best suited to it, and unifies them by distillation.</p>
+    <ul class="parts">
+      <li><strong>DriveRL</strong>, the action model, learns to drive from scratch with closed-loop RL. It converts real nuPlan logs into mixed-agent interactive worlds, where each background actor receives its own behavior provider, so that log replay, rule-based behaviors, and learned policies coexist within one scene. In these worlds, a 5.7M-parameter privileged policy is trained with PPO.</li>
+      <li><strong>DriveVFM</strong>, the perception model, learns from massive raw images by distilling frozen vision foundation models. It consolidates DINOv3, SigLIP2, SAM, and Depth Anything V2 into a single driving backbone, with no task labels.</li>
+      <li><strong>DriveZero</strong> unifies the two. It encodes multi-view images with DriveVFM, decodes trajectory proposals, and learns them from DriveRL rollouts instead of human trajectories, including rollouts under augmented goals that the human log never contained.</li>
+    </ul>
+  </section>
+
+  <!-- Results -->
+  <section id="results">
+    <h2>Results</h2>
+    <p class="lead">DriveRL exceeds the log-replay expert on all six nuPlan closed-loop settings. DriveZero, trained only on DriveRL rollouts, surpasses the human driver on NAVSIMv1 and leads NAVSIMv2 and the true closed-loop HUGSIM benchmark.</p>
+    <div class="charts" id="charts"></div>
+    <p class="footnote">Orange: ours, no human trajectory supervision. Gray: prior methods. nuPlan is the mean over Val14, Test14-hard, and Test14-random in non-reactive and reactive modes; selected methods reported on all six are shown. NAVSIM and HUGSIM baselines are camera-only.</p>
+  </section>
+
+  <!-- DriveRL -->
+  <section id="driverl">
+    <h2>DriveRL</h2>
+    <p class="lead tight">Closed-loop RL in log-initialized worlds. The learned policy surpasses the logs that seed it.</p>
+    <img class="diagram" src="assets/diagrams/driverl.svg" alt="Many parallel driving worlds exchange observations and actions with one policy and critic trained with PPO">
+
+    <h3 class="first">Mixed-agent worlds</h3>
+    <p class="lead">Each background actor gets its own behavior provider. The same scene under log replay, IDM, and self-play.</p>
+    <div class="legend">
+      <span><i class="sw" style="background:#2963ef"></i>Log ego (human driver)</span>
+      <span><i class="sw" style="background:#843aef"></i>DriveRL (RL policy)</span>
+      <span><i class="sw" style="background:#84848c"></i>Log-replay actors</span>
+      <span><i class="sw" style="background:#00738c"></i>IDM actors</span>
+      <span><i class="sw" style="background:#4294e6"></i>Self-play actors</span>
+      <span><i class="sw dashed"></i>Logged position of the actor being replaced</span>
+    </div>
+    <div class="stack">
+      <figure>
+        <div class="grid-3">
+          <img src="assets/mixed/case1_log.gif" alt="Log replay" loading="lazy">
+          <img src="assets/mixed/case1_idm.gif" alt="IDM" loading="lazy">
+          <img src="assets/mixed/case1_selfplay.gif" alt="Self-play" loading="lazy">
+        </div>
+        <figcaption class="cols-3"><span>Log replay</span><span>IDM</span><span>Self-play</span></figcaption>
+      </figure>
+      <figure>
+        <div class="grid-3">
+          <img src="assets/mixed/case2_log.gif" alt="Log replay" loading="lazy">
+          <img src="assets/mixed/case2_idm.gif" alt="IDM" loading="lazy">
+          <img src="assets/mixed/case2_selfplay.gif" alt="Self-play" loading="lazy">
+        </div>
+        <figcaption class="cols-3"><span>Log replay</span><span>IDM</span><span>Self-play</span></figcaption>
+      </figure>
+    </div>
+
+    <h3>Goal augmentation</h3>
+    <p class="lead">The teacher is goal-conditioned, so one scene yields multiple goal-consistent trajectories beyond the single human future.</p>
+    <div class="pairs">
+      <figure>
+        <div class="grid-2">
+          <img src="assets/auggoal/case1_human.gif" alt="Human rollout" loading="lazy">
+          <img src="assets/auggoal/case1_teacher.gif" alt="Teacher rollout" loading="lazy">
+        </div>
+        <figcaption class="cols-2"><span>Human log</span><span>DriveRL, augmented goal</span></figcaption>
+      </figure>
+      <figure>
+        <div class="grid-2">
+          <img src="assets/auggoal/case2_human.gif" alt="Human rollout" loading="lazy">
+          <img src="assets/auggoal/case2_teacher.gif" alt="Teacher rollout" loading="lazy">
+        </div>
+        <figcaption class="cols-2"><span>Human log</span><span>DriveRL, augmented goal</span></figcaption>
+      </figure>
+      <figure>
+        <div class="grid-2">
+          <img src="assets/auggoal/case3_human.gif" alt="Human rollout" loading="lazy">
+          <img src="assets/auggoal/case3_teacher.gif" alt="Teacher rollout" loading="lazy">
+        </div>
+        <figcaption class="cols-2"><span>Human log</span><span>DriveRL, augmented goal</span></figcaption>
+      </figure>
+      <figure>
+        <div class="grid-2">
+          <img src="assets/auggoal/case4_human.gif" alt="Human rollout" loading="lazy">
+          <img src="assets/auggoal/case4_teacher.gif" alt="Teacher rollout" loading="lazy">
+        </div>
+        <figcaption class="cols-2"><span>Human log</span><span>DriveRL, augmented goal</span></figcaption>
+      </figure>
+    </div>
+
+    <h3>Real-world deployment</h3>
+    <p class="lead">DriveRL deployed on a small fleet and validated in real traffic. It is trained on our own driving logs with self-play enabled; the logs only seed the scenes and goals, and no human demonstration is used. Onboard detection, online mapping and navigation provide the structured state. Here DriveRL controls the vehicle in closed loop on a crowded urban road with dense traffic.</p>
+    <video class="video-wide" src="assets/realworld.mp4" controls autoplay muted loop playsinline preload="metadata"></video>
+
+    <h3>Value-guided test-time search</h3>
+    <p class="lead">Sample several actions, roll them out briefly, and keep a higher-value candidate when the critic prefers it.</p>
+    <div class="legend">
+      <span>Left: policy mode</span>
+      <span>Right: with search</span>
+      <span><i class="sw" style="background:#fba603"></i>Ego</span>
+      <span><i class="sw" style="background:#fb4546"></i>Collision</span>
+      <span><i class="sw" style="background:#84898b"></i>Other actors</span>
+    </div>
+    <div class="card">
+      <img id="tts-img" src="assets/tts/01.gif" alt="DriveRL test-time search: without on the left, with on the right">
+      <div class="toolbar bottom">
+        <span class="label">Case <span id="tts-label">01</span> of 4</span>
+        <div class="tabs" id="tts-tabs"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DriveVFM -->
+  <section id="drivevfm">
+    <h2>DriveVFM</h2>
+    <p class="lead">One driving backbone distilled from four frozen vision foundation models: DINOv3 for spatial structure, SigLIP2 for semantics, SAM for boundaries, Depth Anything V2 for geometry. No detection, lane, segmentation, or depth labels; trained on web-scale images mixed with driving scenes.</p>
+    <svg class="diagram" viewBox="0 0 960 340" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" font-family="'Noto Sans', 'Helvetica Neue', Arial, sans-serif" role="img" aria-label="Internet and driving images pass through four frozen foundation models whose features supervise one DriveVFM backbone"><defs><marker id="dz-arr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#363636"/></marker><clipPath id="vfm-c1"><rect x="55" y="36" width="120" height="72" rx="4"/></clipPath><clipPath id="vfm-c2"><rect x="55" y="118" width="120" height="72" rx="4"/></clipPath><clipPath id="vfm-c3"><rect x="55" y="200" width="120" height="72" rx="4"/></clipPath></defs><image href="assets/vfm/market.jpg" xlink:href="assets/vfm/market.jpg" x="55" y="36" width="120" height="72" preserveAspectRatio="xMidYMid slice" clip-path="url(#vfm-c1)"/><rect x="55" y="36" width="120" height="72" rx="4" fill="none" stroke="#e5e5e5" stroke-width="1"/><image href="assets/vfm/dog.jpg" xlink:href="assets/vfm/dog.jpg" x="55" y="118" width="120" height="72" preserveAspectRatio="xMidYMid slice" clip-path="url(#vfm-c2)"/><rect x="55" y="118" width="120" height="72" rx="4" fill="none" stroke="#e5e5e5" stroke-width="1"/><image href="assets/vfm/highway.jpg" xlink:href="assets/vfm/highway.jpg" x="55" y="200" width="120" height="72" preserveAspectRatio="xMidYMid slice" clip-path="url(#vfm-c3)"/><rect x="55" y="200" width="120" height="72" rx="4" fill="none" stroke="#e5e5e5" stroke-width="1"/><text x="115" y="298" font-size="12.5" fill="#363636" font-weight="600" text-anchor="middle">Internet + driving images</text><text x="115" y="316" font-size="10.5" fill="#7a7a7a" font-weight="400" text-anchor="middle">LAION · ImageNet-21K · SA-1B</text><text x="115" y="331" font-size="10.5" fill="#7a7a7a" font-weight="400" text-anchor="middle">OpenDV · nuPlan · Waymo</text><path d="M 182 154 C 270 154 290 55 380 55" fill="none" stroke="#b5b5b5" stroke-width="1.5" marker-end="url(#dz-arr2)"/><path d="M 182 154 C 270 154 290 125 380 125" fill="none" stroke="#b5b5b5" stroke-width="1.5" marker-end="url(#dz-arr2)"/><path d="M 182 154 C 270 154 290 195 380 195" fill="none" stroke="#b5b5b5" stroke-width="1.5" marker-end="url(#dz-arr2)"/><path d="M 182 154 C 270 154 290 265 380 265" fill="none" stroke="#b5b5b5" stroke-width="1.5" marker-end="url(#dz-arr2)"/><text x="470" y="18" font-size="12" fill="#7a7a7a" font-weight="400" text-anchor="middle">Frozen vision foundation models</text><rect x="380" y="35" width="180" height="40" rx="4" fill="#fff" stroke="#363636" stroke-width="1.5"/><text x="392" y="60" font-size="13" fill="#363636" font-weight="600" text-anchor="start">DINOv3</text><text x="548" y="59" font-size="10.5" fill="#7a7a7a" font-weight="400" text-anchor="end">frozen</text><rect x="380" y="105" width="180" height="40" rx="4" fill="#fff" stroke="#363636" stroke-width="1.5"/><text x="392" y="130" font-size="13" fill="#363636" font-weight="600" text-anchor="start">SigLIP2</text><text x="548" y="129" font-size="10.5" fill="#7a7a7a" font-weight="400" text-anchor="end">frozen</text><rect x="380" y="175" width="180" height="40" rx="4" fill="#fff" stroke="#363636" stroke-width="1.5"/><text x="392" y="200" font-size="13" fill="#363636" font-weight="600" text-anchor="start">SAM</text><text x="548" y="199" font-size="10.5" fill="#7a7a7a" font-weight="400" text-anchor="end">frozen</text><rect x="380" y="245" width="180" height="40" rx="4" fill="#fff" stroke="#363636" stroke-width="1.5"/><text x="392" y="270" font-size="13" fill="#363636" font-weight="600" text-anchor="start">Depth Anything V2</text><text x="548" y="269" font-size="10.5" fill="#7a7a7a" font-weight="400" text-anchor="end">frozen</text><path d="M 560 55 C 620 55 640 170 700 170" fill="none" stroke="#363636" stroke-width="1.5" stroke-dasharray="5 5"/><path d="M 560 125 C 620 125 640 170 700 170" fill="none" stroke="#363636" stroke-width="1.5" stroke-dasharray="5 5"/><path d="M 560 195 C 620 195 640 170 700 170" fill="none" stroke="#363636" stroke-width="1.5" stroke-dasharray="5 5"/><path d="M 560 265 C 620 265 640 170 700 170" fill="none" stroke="#363636" stroke-width="1.5" stroke-dasharray="5 5"/><rect x="700" y="110" width="230" height="120" rx="6" fill="#fff7f0" stroke="#e8741a" stroke-width="2"/><text x="815" y="178" font-size="22" fill="#e8741a" font-weight="700" text-anchor="middle">DriveVFM</text><text x="815" y="258" font-size="11" fill="#7a7a7a" font-weight="400" text-anchor="middle">Feature matching only, no task labels</text></svg>
+    <h3 class="first">Feature visualization</h3>
+    <p class="lead">PCA of DriveVFM patch features on driving scenes.</p>
+    <img class="figure" src="assets/drivevfm_pca.png" alt="PCA visualization of DriveVFM patch features" loading="lazy">
+  </section>
+
+  <!-- DriveZero -->
+  <section id="drivezero">
+    <h2>DriveZero</h2>
+    <p class="lead">A camera-only planner distilled from DriveRL, evaluated zero-shot in true closed loop on HUGSIM.</p>
+    <img class="figure" src="assets/architecture.png" alt="DriveZero architecture: DriveRL teacher rollouts supervise a DriveVFM-based transformer planner through WTA and score losses">
+
+    <h3 class="first">Planning visualizations</h3>
+    <p class="lead">DriveZero-Scale vs. the previous state of the art on NAVSIM and HUGSIM.</p>
+    <div class="stack-16">
+      <img class="full" src="assets/drivezero_vs_sota_navsim.png" alt="DriveZero vs previous SOTA on NAVSIM" loading="lazy">
+      <div class="side-by-side">
+        <img src="assets/drivezero_vs_sota_hugsim_0.png" alt="DriveZero vs previous SOTA on HUGSIM, sample 1" loading="lazy">
+        <img src="assets/drivezero_vs_sota_hugsim_1.png" alt="DriveZero vs previous SOTA on HUGSIM, sample 2" loading="lazy">
+      </div>
+    </div>
+
+    <h3>HUGSIM closed-loop comparison</h3>
+    <p class="lead">DrivoR-Scale (previous state of the art) vs. DriveZero on the same scenes.</p>
+    <div class="card">
+      <div class="toolbar top">
+        <div class="tabs" id="diff-tabs"></div>
+        <span class="label" id="hs-label"></span>
+        <div class="tabs" id="scene-tabs"></div>
+      </div>
+      <div class="compare">
+        <div>
+          <div class="title">DrivoR-Scale</div>
+          <video id="hs-drivor" muted autoplay loop playsinline controls preload="metadata"></video>
+          <div class="metrics">
+            <span>HD-Score <strong id="hs-d0"></strong></span>
+            <span>RC <strong id="hs-d1"></strong></span>
+            <span>PDMS <strong id="hs-d2"></strong></span>
+          </div>
+        </div>
+        <div>
+          <div class="title">DriveZero <span class="ours">(ours)</span></div>
+          <video id="hs-dermes" muted autoplay loop playsinline controls preload="metadata"></video>
+          <div class="metrics ours">
+            <span>HD-Score <strong id="hs-z0"></strong></span>
+            <span>RC <strong id="hs-z1"></strong></span>
+            <span>PDMS <strong id="hs-z2"></strong></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contributors -->
+  <section id="contributors">
+    <h2>Contributors</h2>
+    <dl class="contributors">
+      <dt>DriveRL</dt><dd>Hao He, Chengcheng Hu, Zirun Su, Heng Zhang</dd>
+      <dt>DriveVFM</dt><dd>Haisong Liu</dd>
+      <dt>DriveZero</dt><dd>Haisong Liu*, Jinke Li*, Haochen Tian*, Zhenwei Shen, Hongyang Li</dd>
+      <dt>Real-World Deployment</dt><dd>Hao He, Zhichao Li, Yunchen Yang, Bochao Huang, Siyu Zhang, Kuangye Chen, Heng Zhang, Xiongjie Zhang, Wentao Dai, Hengchen Dai, Siyuan Liu</dd>
+      <dt>Project Lead</dt><dd>Hao He, Zhichao Li, Zehao Huang, Naiyan Wang</dd>
+    </dl>
+    <p class="note">* Equal contribution.</p>
+  </section>
+
+  <!-- BibTeX -->
+  <section id="bibtex">
+    <div class="bib-head">
+      <h2>BibTeX</h2>
+      <button class="copy-btn" id="copy-bib" type="button">Copy</button>
+    </div>
+<pre id="bib-text">@article{xiaomi2025drivezero,
+  title={DriveZero: End-to-End Driving Policy beyond Human Demonstrations},
+  author={Xiaomi L3 Team},
+  journal={arXiv preprint arXiv:xxx},
+  year={2026}
+}</pre>
+  </section>
+
+  <footer>AD &amp; Robotics, L3 Team · Xiaomi EV · 2026</footer>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
