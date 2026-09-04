@@ -1,12 +1,13 @@
 
 <div align="center">
-  <img src="./assets/name.png" alt="DriveZero" width="50%" style="display:block; margin:0 auto 10px;" />
-  <p style="margin:10px 0 12px; text-align:center; line-height:1.5;">
+  <img src="./assets/name.png" alt="DriveZero" width="50%" style="display:block;" />
+  <hr>
+  <p style=" text-align:center; line-height:1.5;">
     <a href="./drivezero_report.pdf">📄 Tech Report</a>
     &nbsp;|
     <a href="https://xiaomiautol3.github.io/DriveZero/"> 📰 Project Page</a>
   </p>
-  <h1 style="margin:0 0 8px;">End-to-End Driving Beyond Human Demonstrations</h1>
+  <h1 >End-to-End Driving Beyond Human Demonstrations</h1>
 </div>
 
 <div align="center">
