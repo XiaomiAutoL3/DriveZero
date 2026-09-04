@@ -1,7 +1,7 @@
 
 # DriveZero
 
-**End-to-End Driving Policy Beyond Human Demonstrations**
+**End-to-End Driving Beyond Human Demonstrations**
 
 📄 [Report](./drivezero_report.pdf) |
 📰 [Project page](https://xiaomiautol3.github.io/DriveZero/)
