@@ -3,12 +3,12 @@
 
 **End-to-End Driving Beyond Human Demonstrations**
 
-📄 [Report](./drivezero_report.pdf) |
+📄 [Report](https://raw.githubusercontent.com/XiaomiAutoL3/DriveZero/main/drivezero_report.pdf) |
 📰 [Project page](https://xiaomiautol3.github.io/DriveZero/)
 
 
 <div align="center">
-  <img src="./assets/teaser.png" alt="DriveZero teaser" width="100%" />
+  <img src="https://raw.githubusercontent.com/XiaomiAutoL3/DriveZero/main/assets/teaser.png" alt="DriveZero teaser" width="100%" />
 </div>
 
 ## 📢 News
