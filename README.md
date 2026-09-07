@@ -16,7 +16,7 @@
 
 ## 📢 News
 
-- **[2026/9/4]** We released our [paper](https://arxiv.org/abs/xxx) on arXiv.
+- **[2026/9/4]** We released our [tech report](https://github.com/XiaomiAutoL3/DriveZero/blob/main/drivezero_report.pdf).
 
 ## 📋 TODO List
 
