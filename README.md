@@ -3,7 +3,7 @@
   <img src="./assets/name.png" alt="DriveZero" width="50%" style="display:block;" />
   <hr>
   <p style=" text-align:center; line-height:1.5;">
-    <a href="./drivezero_report.pdf">📄 Tech Report</a>
+    <a href="https://arxiv.org/pdf/2609.06055">📄 Tech Report</a>
     &nbsp;|
     <a href="https://xiaomiautol3.github.io/DriveZero/"> 📰 Project Page</a>
   </p>
@@ -16,7 +16,7 @@
 
 ## 📢 News
 
-- **[2026/9/4]** We released our [tech report](https://github.com/XiaomiAutoL3/DriveZero/blob/main/drivezero_report.pdf).
+- **[2026/9/9]** We released our [tech report](https://arxiv.org/pdf/2609.06055) on arXiv.
 
 ## 📋 TODO List
 
@@ -27,9 +27,9 @@
 
 ```bibtex
 @article{xiaomi2025drivezero,
-  title={DriveZero: End-to-End Driving Policy beyond Human Demonstrations},
+  title={DriveZero: End-to-End Driving beyond Human Demonstrations},
   author={Xiaomi L3 Team},
-  journal={arXiv preprint arXiv:xxx},
+  journal={arXiv preprint arXiv:2609.06055},
   year={2026}
 }
 ```
