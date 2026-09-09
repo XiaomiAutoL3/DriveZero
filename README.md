@@ -26,7 +26,7 @@
 ## Citation
 
 ```bibtex
-@article{xiaomi2025drivezero,
+@article{xiaomi2026drivezero,
   title={DriveZero: End-to-End Driving beyond Human Demonstrations},
   author={Xiaomi L3 Team},
   journal={arXiv preprint arXiv:2609.06055},
