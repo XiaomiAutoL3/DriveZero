@@ -36,4 +36,4 @@
 
 ## Acknowledgements
 - [DrivoR](https://github.com/valeoai/DrivoR/) | [SimScale](https://github.com/OpenDriveLab/SimScale) | [NAVSIM](https://github.com/autonomousvision/navsim) | [HUGSIM](https://github.com/hyzhou404/HUGSIM) | [CaRL](https://github.com/autonomousvision/CaRL) | [PlanTF](https://github.com/jchengai/planTF) | [NuPlan](https://github.com/motional/nuplan-devkit)
-- [SAM](https://github.com/facebookresearch/segment-anything) | [DINOv3](https://github.com/facebookresearch/dinov3) | [SigLIP2](https://github.com/google-research/big_vision) | [Depth Anything](https://github.com/LiheYoung/Depth-Anything)
+- [RADIO](https://github.com/nvlabs/radio) | [SAM](https://github.com/facebookresearch/segment-anything) | [DINOv3](https://github.com/facebookresearch/dinov3) | [SigLIP2](https://github.com/google-research/big_vision) | [Depth Anything](https://github.com/LiheYoung/Depth-Anything)
