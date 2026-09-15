@@ -3,9 +3,11 @@
   <img src="./assets/name.png" alt="DriveZero" width="50%" style="display:block;" />
   <hr>
   <p style=" text-align:center; line-height:1.5;">
-    <a href="https://arxiv.org/pdf/2609.06055">📄 Tech Report</a>
+    📄 <a href="https://arxiv.org/pdf/2609.06055">Tech Report</a>
     &nbsp;|
-    <a href="https://xiaomiautol3.github.io/DriveZero/"> 📰 Project Page</a>
+    🏠 <a href="https://xiaomiautol3.github.io/DriveZero/"> Project Page</a>
+    &nbsp;|
+    𝕏 <a href="https://x.com/HCTian713/status/2097683904039899356">Twitter</a>
   </p>
   <h1 >End-to-End Driving Beyond Human Demonstrations</h1>
 </div>
