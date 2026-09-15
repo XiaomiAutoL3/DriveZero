@@ -1,0 +1,118 @@
+# Runtime configuration for the DriveRL teacher checkpoint.
+release_schema_version: 1
+release_id: driverl-teacher-u2400
+
+env:
+  scenario_control_type: non_reactive
+  device: cuda
+  enable_occupancy_grid: false
+  action_type: continuous
+  dynamics_model: nuplan_bicycle_model
+  num_steps: 110
+  goal_count_probs: [0.5, 0.5]
+  dataloader_config:
+    target_sample_rate_hz: 5.0
+  engine_config:
+    done_after_reaching_goal: false
+    enable_visible_mask: false
+    enable_dynamics_noise: false
+    enable_narrow_road_right_preference_reward: false
+    control_delay_frame: 0
+    min_jerk_long: -8.0
+    max_jerk_long: 5.0
+    positive_jerk_limit_when_nonnegative_acc: 1.0
+    min_jerk_lat: -1.0
+    max_jerk_lat: 1.0
+    min_a_long: -6.5
+    max_a_long: 1.5
+    min_a_lat: -3.0
+    max_a_lat: 3.0
+    nuplan_bicycle_accel_time_constant: 0.2
+    nuplan_bicycle_steering_angle_time_constant: 0.05
+    nuplan_bicycle_max_steering_angle: 1.0471975511965976
+    nuplan_bicycle_max_acceleration: 4.0
+    nuplan_bicycle_max_steering_rate: 0.8
+    nuplan_bicycle_wheelbase: 3.089
+    nuplan_bicycle_rear_axle_to_center: 1.461
+    a_lat_comfort_low_speed: 5.0
+    a_lat_comfort_high_speed: 30.0
+    a_lat_comfort_threshold_low: 4.0
+    a_lat_comfort_threshold_high: 6.0
+    a_long_decel_full_speed: 2.78
+    a_long_decel_floor: -0.8
+    nuplan_comfort_min_lon_accel: -4.05
+    nuplan_comfort_max_lon_accel: 2.4
+    nuplan_comfort_max_abs_lat_accel: 4.89
+    nuplan_comfort_max_abs_lon_jerk: 4.13
+    nuplan_comfort_max_abs_mag_jerk: 8.37
+    nuplan_comfort_max_abs_yaw_rate: 0.95
+    nuplan_comfort_max_abs_yaw_accel: 1.93
+    num_jerk_lat_actions: 64
+    num_jerk_long_actions: 24
+    collision_speed_buffer_base: 0.0
+    collision_speed_buffer_max: 0.0
+    collision_relative_speed_buffer_gain: 0.0
+    domain_randomization:
+      enabled: false
+      # Deterministic reward values used by the inference/TTS runtime.
+      collision_reward_weight: {default: -1.0}
+      collision_segment_time: {default: 0.2}
+      collision_distance_threshold: {default: 0.0}
+      ttc_weight: {default: 0.5}
+      ttc_time: {default: 2.5}
+      ttc_width_buffer: {default: 0.0}
+      ttc_length_buffer: {default: 0.0}
+      off_road_weight: {default: -1.0}
+      cross_lane_weight: {default: 0.4}
+      wrong_way_weight: {default: 0.2}
+      goal_reaching_threshold: {default: 3.0}
+      goal_reaching_weight: {default: 0.3}
+      goal_reaching_distance_weight: {default: 0.0}
+      survival_reward_numerator: {default: 0.0}
+      comfort_weight: {default: 0.5}
+      deviation_distance_weight: {default: 0.75}
+      deviation_angle_limit: {default: 0.75}
+      deviation_angle_weight: {default: 0.0}
+      max_deviation_distance_for_penalty: {default: 4.0}
+      curb_clearance_distance: {default: 0.7}
+      curb_clearance_weight: {default: 0.5}
+      static_speed_weight: {default: 0.6}
+      over_speed_threshold: {default: 2.23}
+      over_speed_scale: {default: 1.0}
+      width_buffer: {default: 0.0}
+      position_weight: {default: 1.0}
+      velocity_weight: {default: 1.0}
+      heading_weight: {default: 1.0}
+      position_threshold: {default: 2.0}
+      velocity_threshold: {default: 2.0}
+      heading_threshold: {default: 0.5}
+
+agent:
+  agent_name: vanilla_net_agent
+  network_name: vanilla_net
+  compile: false
+  device: cuda
+  enable_occupancy_grid: false
+  dynamics_model: nuplan_bicycle_model
+  enable_value_decomposition: true
+  embed_dim: 256
+  num_heads: 4
+  max_agents: 96
+  max_lanes: 256
+  max_lane_centers: 64
+  min_vehicle_agents: 32
+  min_pedestrian_agents: 32
+  history_steps: 5
+  future_steps: 0
+  lane_backward_range: 100.0
+  use_raw_lane_types: true
+  use_steering_rate: true
+  use_ego_history: true
+  enable_traffic_light_features: true
+  num_agent_attention_layers: 2
+  enable_lane_attention: true
+  num_lane_attention_layers: 1
+  num_heads_lane: 4
+
+tts:
+  gamma: 0.99

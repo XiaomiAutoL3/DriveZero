@@ -1,0 +1,6 @@
+include LICENSE.txt
+include NOTICE
+include README.md
+include requirements.txt
+recursive-include nuplan *.css *.html *.js *.png *.yaml
+recursive-include tests *.py

@@ -1,0 +1,7 @@
+# Supported DriveRL inference versions for Python 3.11.
+numpy==1.26.4
+torch==2.7.1
+hydra-core==1.3.2
+omegaconf==2.3.0
+ray==2.51.1
+matplotlib>=3.8,<4

@@ -1,0 +1,18 @@
+driverl_nuplan_planner:
+  _target_: driverl.nuplan.planner.DriveRLNuPlanPlanner
+  _convert_: 'all'
+  config_path: ${oc.env:DRIVERL_CONFIG_PATH,configs/driverl_inference.yaml}
+  checkpoint_path: ${oc.env:DRIVERL_CHECKPOINT_PATH,checkpoints/checkpoint.pt}
+  device: cuda
+  sampling_method: argmax
+  trajectory_num_poses: 80
+  trajectory_interval_length: 0.1
+  trajectory_mode: action
+  route_goal_horizon_s: 12.0
+  route_goal_min_speed_mps: 5.0
+  route_goal_pair_mode: legacy
+  tts_enabled: false
+  tts_num_candidates: 8
+  tts_seed: 42
+  strict_checkpoint: true
+  compile_agent: false
