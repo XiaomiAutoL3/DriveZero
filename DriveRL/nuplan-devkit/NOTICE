@@ -1,0 +1,13 @@
+nuPlan runtime companion for DriveRL
+
+This distribution includes material derived from the nuPlan devkit:
+Copyright 2021 Motional. The accompanying LICENSE.txt contains the Apache
+License 2.0 terms and notice.
+
+The NuBoard web resources include Spectre.css assets by picturepan2, released
+under the MIT License. The upstream license header is retained in the bundled
+CSS files.
+
+The bundled Motional logo is a trademarked asset of Motional. It is included
+for NuBoard rendering compatibility; this notice does not grant trademark
+rights.

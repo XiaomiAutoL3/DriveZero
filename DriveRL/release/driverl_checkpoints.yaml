@@ -1,0 +1,54 @@
+schema_version: 1
+project: DriveRL
+route_roadblock_correction: true
+nuplan_companion:
+  repository: DriveRL
+  path: nuplan-devkit
+  commit: 1f09937994257a4b3c9b9afd712da3674608aed8
+artifacts:
+  - id: driverl-teacher-u2400
+    display_name: DriveRL teacher
+    checkpoint_file: release/checkpoints/checkpoint_2400.pt
+    checkpoint_format: driverl_weights_only
+    config_file: release/configs/driverl_teacher.yaml
+    checkpoint_update: 2400
+    agent_name: vanilla_net_agent
+    network_name: vanilla_net
+    history_steps: 5
+    future_steps: 0
+    target_sample_rate_hz: 5.0
+    dynamics_model: nuplan_bicycle_model
+    value_decomposition: true
+    evaluation_protocol: routefix-six-split-replay
+    evaluation_status: artifact_bundled_pending_public_eval
+    evaluation_tts_enabled: false
+    evaluation_scenario_counts:
+      val14_nr: 1118
+      val14_r: 1118
+      test14hard_nr: 272
+      test14hard_r: 272
+      test14random_nr: 261
+      test14random_r: 261
+  - id: driverl-selfplay-u3800
+    display_name: DriveRL self-play teacher
+    checkpoint_file: release/checkpoints/checkpoint_3800.pt
+    checkpoint_format: driverl_weights_only
+    config_file: release/configs/driverl_selfplay.yaml
+    checkpoint_update: 3800
+    agent_name: vanilla_net_agent
+    network_name: vanilla_net
+    history_steps: 5
+    future_steps: 0
+    target_sample_rate_hz: 5.0
+    dynamics_model: nuplan_bicycle_model
+    value_decomposition: true
+    evaluation_protocol: routefix-six-split-replay
+    evaluation_status: artifact_bundled_pending_public_eval
+    evaluation_tts_enabled: false
+    evaluation_scenario_counts:
+      val14_nr: 1118
+      val14_r: 1118
+      test14hard_nr: 272
+      test14hard_r: 272
+      test14random_nr: 261
+      test14random_r: 261

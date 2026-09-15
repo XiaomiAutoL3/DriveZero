@@ -1,0 +1,17 @@
+"""Numerical limits used by the DriveRL inference runtime."""
+
+import numpy as np
+
+MIN_SPEED = 0.0
+MAX_SPEED = 40.0
+
+MIN_STEERING_ANGLE = np.deg2rad(-432.0) / 12.6
+MAX_STEERING_ANGLE = np.deg2rad(432.0) / 12.6
+MIN_STEERING_RATE = MIN_STEERING_ANGLE * 0.7
+MAX_STEERING_RATE = MAX_STEERING_ANGLE * 0.7
+
+EPS = 1e-6
+DEFAULT_SPEED_LIMIT = 40.0 / 3.6
+MIN_SPEED_LIMIT = 5.0 / 3.6
+MAX_SPEED_LIMIT = 120.0 / 3.6
+EXPECTATION_SPEED_THRESHOLD = 180.0 / 3.6

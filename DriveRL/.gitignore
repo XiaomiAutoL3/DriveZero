@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+build/
+dist/
+
+.venv*
+.idea/
+.vscode/
+.DS_Store
+
+output/
+tmp/
+*.log
+*.pid
+nuplan_db_links/

@@ -1,0 +1,23 @@
+[project]
+name = "driverl"
+version = "0.1.0"
+description = "Inference-only DriveRL nuPlan planner and test-time scaling runtime."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "einops>=0.8.1",
+    "gymnasium>=1.2.1",
+    "numpy>=1.26,<2",
+    "pyyaml>=6.0.3",
+    "torch==2.7.1",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+driverl = ["py.typed"]
