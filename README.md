@@ -15,14 +15,18 @@
 </div>
 
 ## 📢 News
-
-- **[2026/9/9]** We released our [tech report](https://arxiv.org/pdf/2609.06055) on arXiv.
+- **`2026/9/15`** [DriveRL](./DriveRL/README.md) inference code and checkpoints are released.
+- **`2026/9/9`** Our [tech report](https://arxiv.org/pdf/2609.06055) are released on arXiv.
 
 ## 📋 TODO List
 
-- [ ] Code release.
-- [ ] Checkpoints release.
+- [ ] DriveZero.
+- [ ] DriveVFM.
+- [x] DriveRL inference code and checkpoints.
 
+## Getting Started
+
+- [🚗 DriveRL Inference](./DriveRL/README.md)
 ## Citation
 
 ```bibtex
