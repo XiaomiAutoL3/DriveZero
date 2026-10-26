@@ -1,0 +1,102 @@
+# DriveVFM ViT-S depth-v1 + LoRA, four cameras, Hermes v10 trajectories and PDM scores.
+teacher:
+  name: nuplan_v10
+  checkpoint_path: /path/to/driverl/checkpoints/checkpoint_2400.pt
+student:
+  model:
+    embed_dim: 256
+    num_visual_register_cameras: 4
+    num_visual_register_tokens_per_camera: 16
+    num_visual_register_attention_layers: 2
+    num_trajectory_proposals: 64
+    planning_num_heads: 8
+    planning_num_layers: 4
+    trajectory_head_hidden_dim: 1024
+    visual_backbone_weights: /path/to/drivevfm/checkpoints/model.pth
+    visual_backbone_source: /path/to/drivevfm/source
+dataset:
+  mode: train
+  dataset_files:
+    train:
+    - data/nuplan/navtrain
+  batch_size: 256
+  num_workers: 6
+  drop_last: true
+  shuffle: true
+  samples_per_shard: 1024
+  history_length: 21
+  future_length: 100
+  temporal_stride: 2
+  max_agents: 128
+  max_lanes_centers: 1024
+  max_lanes_other: 1024
+  route_points: 100
+  camera_sensor_fqdns:
+  - CAM_F0
+  - CAM_B0
+  - CAM_L0
+  - CAM_R0
+  camera_patch_size: 16
+  camera_depth_num: 64
+  camera_depth_start: 1.0
+  camera_depth_end: 100.0
+  init_steps: 20
+  num_steps: 100
+  goal_sampling_mode: route
+  goal_sampling_gamma: 1.0
+  goal_count_probs:
+  - 0.5
+  - 0.5
+  goal_snap_keep_prob: 0.5
+  goal_snap_k: 4
+  goal_snap_max_distance: 20.0
+augmentation:
+  goal_command:
+    original_prob: 0.5
+    command_distance_m: 20.0
+    command_lateral_threshold_m: 2.0
+    off_road_goal:
+      target_progress_range_m:
+      - 25.0
+      - 80.0
+      lateral_offset_range_m:
+      - 5.0
+      - 15.0
+      transition_start_m: 5.0
+      transition_end_range_m:
+      - 25.0
+      - 60.0
+      tangent_smoothing_m: 5.0
+      max_route_ego_distance_m: 10.0
+      route_resample_spacing_m: 1.0
+      max_route_segment_m: 8.0
+      max_route_turn_deg: 45.0
+chunk:
+  horizon_k: 20
+  long_trajectory:
+    additional_steps: 5
+  compile_teacher: true
+planning:
+  proposal_score_sample_count: 32
+  pdm_oracle:
+    drivor_root: external/drivor
+    nuplan_devkit_root: external/drivor/nuplan-devkit
+    metric_cache_paths:
+    - data/metric_cache/navtrain
+    - data/metric_cache/navtest
+    trajectory_interval: 0.2
+    simulation_num_poses: 40
+    simulation_interval: 0.1
+    threads_per_node: 8
+training:
+  output_root: outputs
+  run_name: dermes_nuplan
+  seed: 42
+  device: cuda
+  learning_rate: 2e-4
+  max_updates: 10000
+  log_interval: 10
+  save_interval: 1000
+  grad_clip_norm: 1.0
+  score_loss_weight: 1.0
+  trajectory_loss_weight: 1.0
